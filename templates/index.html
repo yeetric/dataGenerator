@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Data Points</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Generate Data Points for an Equation</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="parameter-form" class="mt-3">
+                    <div class="form-group">
+                        <label for="equation">Equation:</label>
+                        <input type="text" id="equation" class="form-control" name="equation" placeholder="e.g., 0.93 * x" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="std_dev">Standard Deviation:</label>
+                        <input type="number" id="std_dev" class="form-control" name="std_dev" step="0.01" value="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_points">Number of Points:</label>
+                        <input type="number" id="num_points" class="form-control" name="num_points" value="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="x_min">X Min:</label>
+                        <input type="number" id="x_min" class="form-control" name="x_min" step="0.01" value="0.3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="y_min">Y Min:</label>
+                        <input type="number" id="y_min" class="form-control" name="y_min" step="0.01" value="0.3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="x_max">X Max:</label>
+                        <input type="number" id="x_max" class="form-control" name="x_max" step="0.01" value="10.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="y_max">Y Max:</label>
+                        <input type="number" id="y_max" class="form-control" name="y_max" step="0.01" value="10.5" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Data</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+
+                <div id="graph-container" class="mt-3"></div>
+
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between">
+                        
+                        <button type="button" class="btn button" onclick="exportCSV()">Export as CSV</button>
+
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn button" onclick="exportTXT()">Export as TXT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        updateGraph([], []); // empty call for blank graph
+
+        document.getElementById('parameter-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.hasOwnProperty('error')) {
+                        alert(result.error);
+                    } else {
+                        updateGraph(result.x_data, result.y_data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function updateGraph(x_data, y_data) {
+            const trace1 = {
+                x: x_data,
+                y: y_data,
+                mode: 'markers',
+                name: 'Data Points',
+                marker: { size: 8 }
+            };
+
+            const layout = {
+                title: 'Graph of the Equation and Data Points',
+                xaxis: { title: 'X' },
+                yaxis: { title: 'Y' }
+            };
+
+            Plotly.newPlot('graph-container', [trace1], layout);
+        }
+    </script>
+    
+<script>
+    function exportTXT() {
+        const data = "default TXT data before replacement"; 
+
+        fetch('/export-txt')
+    .then(response => response.blob())
+    .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.txt';
+        a.click();
+    });
+    }
+</script>
+
+<script>
+    function exportCSV() {
+        const data = "default CSV data before replacement"; 
+
+        fetch('/export-csv')
+    .then(response => response.blob())
+    .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        a.click();
+    });
+    }
+</script>
+
+</body>
+</html>
