@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
+<style>
+    footer {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: gray;
+    }
+</style>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Generate Data Points for an Equation</h1>
@@ -18,27 +27,27 @@
                     </div>
                     <div class="form-group">
                         <label for="std_dev">Standard Deviation:</label>
-                        <input type="number" id="std_dev" class="form-control" name="std_dev" step="0.01" value="0.1" required>
+                        <input type="number" id="std_dev" class="form-control" name="std_dev" step="0.01" value="1" required>
                     </div>
                     <div class="form-group">
                         <label for="num_points">Number of Points:</label>
-                        <input type="number" id="num_points" class="form-control" name="num_points" value="100" required>
+                        <input type="number" id="num_points" class="form-control" name="num_points" value="50" required>
                     </div>
                     <div class="form-group">
                         <label for="x_min">X Min:</label>
-                        <input type="number" id="x_min" class="form-control" name="x_min" step="0.01" value="0.3" required>
+                        <input type="number" id="x_min" class="form-control" name="x_min" step="0.01" value="0" required>
                     </div>
                     <div class="form-group">
                         <label for="y_min">Y Min:</label>
-                        <input type="number" id="y_min" class="form-control" name="y_min" step="0.01" value="0.3" required>
+                        <input type="number" id="y_min" class="form-control" name="y_min" step="0.01" value="0" required>
                     </div>
                     <div class="form-group">
                         <label for="x_max">X Max:</label>
-                        <input type="number" id="x_max" class="form-control" name="x_max" step="0.01" value="10.5" required>
+                        <input type="number" id="x_max" class="form-control" name="x_max" step="0.01" value="10" required>
                     </div>
                     <div class="form-group">
                         <label for="y_max">Y Max:</label>
-                        <input type="number" id="y_max" class="form-control" name="y_max" step="0.01" value="10.5" required>
+                        <input type="number" id="y_max" class="form-control" name="y_max" step="0.01" value="10" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Generate Data</button>
                 </form>
@@ -60,6 +69,10 @@
             </div>
         </div>
     </div>
+    <footer>
+        Made by Eric H - 2024<br>
+        Contact me: hyweric@gmail.com
+    </footer>
     
     <script>
         updateGraph([], []); // empty call for blank graph
@@ -93,7 +106,7 @@
             };
 
             const layout = {
-                title: 'Graph of the Equation and Data Points',
+                title: 'Graph of Data Points',
                 xaxis: { title: 'X' },
                 yaxis: { title: 'Y' }
             };
