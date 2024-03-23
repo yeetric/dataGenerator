@@ -35,8 +35,8 @@ def index():
         equation = request.form['equation']
         std_dev = float(request.form['std_dev'])
         num_points = int(request.form['num_points'])
-        bounds = [(float(request.form['x_min']), float(request.form['y_min'])), 
-                  (float(request.form['x_max']), float(request.form['y_max']))]
+        bounds = [(float(request.form['x_min']), 0), 
+                  (float(request.form['x_max']), 0)]
         
         try:
             x_data, y_data = generate_data(equation, std_dev, num_points, bounds)
